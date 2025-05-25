@@ -32,6 +32,9 @@ def get_course():
 def set_course():
     global COURSE_GLOBAL
     data=request.get_json()
+    if not data or 'name' not in data:
+        return jsonify({'error': 'El campo "name" es obligatorio'}), 400
+    
     if COURSE_GLOBAL is None:
         COURSE_GLOBAL= Course(course_id=data["id"],name=data["name"],description=data["description"])
     return jsonify(COURSE_GLOBAL.to_entitie()),200
