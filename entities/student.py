@@ -1,20 +1,21 @@
-class Student:
-    """
-    docstring
-    """
-    def __init__(self,student_id:int,name:str,email:str):
-        self.student_id=student_id
-        self.name=name
-        self.email=email
+from dataclasses import dataclass, field
+from typing import Optional
 
-    def update_name(self, new_name:str):
+
+@dataclass
+class Student:
+    id:int
+    name:str
+    age:str
+    can_vote:bool=field(init=False)
+
+    def __post_init__(self):
         """
         docstring
         """
-        self.name=new_name
-    
-    def upd_mail(self,new_email:str):
-        """
-        docstring
-        """
-        self.email=new_email
+        if self.age < 15:
+            raise ValueError("Age mayor de 18")
+        self.can_vote = self.age >= 18
+
+    def __repr__(self):
+        return f"Student(id={self.id}, name='{self.name}', age={self.age})"
