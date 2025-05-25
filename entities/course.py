@@ -6,7 +6,7 @@ class Course:
         """
         docstring
         """
-        self.course_id=course_id
+        self.id=course_id
         self.name=name
         self.description=description
 
@@ -21,3 +21,13 @@ class Course:
         docstring
         """
         self.description=new_description
+
+    def to_entitie(self):
+        """
+        docstring
+        """
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description
+        }
