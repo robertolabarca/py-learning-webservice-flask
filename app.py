@@ -28,7 +28,7 @@ def get_course():
     global COURSE_GLOBAL
     if COURSE_GLOBAL is None:
         return jsonify({"error":"error"}),404
-    return jsonify(COURSE_GLOBAL.to_entitie()),200
+    return jsonify(COURSE_GLOBAL.to_entity()),200
 
 @app.route('/set-course',methods=['POST'])
 def set_course():
@@ -39,7 +39,7 @@ def set_course():
     
     if COURSE_GLOBAL is None:
         COURSE_GLOBAL= Course(course_id=data["id"],name=data["name"],description=data["description"])
-    return jsonify(COURSE_GLOBAL.to_entitie()),200
+    return jsonify(COURSE_GLOBAL.to_entity()),200
 
 @app.route('/set-student',methods=['POST'])
 def set_student():

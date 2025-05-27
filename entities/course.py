@@ -22,7 +22,7 @@ class Course:
         """
         self.description=new_description
 
-    def to_entitie(self):
+    def to_entity(self):
         """
         docstring
         """
