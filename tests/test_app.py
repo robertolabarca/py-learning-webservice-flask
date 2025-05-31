@@ -10,6 +10,8 @@ class TestAppEntity(unittest.TestCase):
         self.app = app.test_client()
         self.app.testing = True
 
+    
+
     def test_get_course_empty(self):
         """
         docstring

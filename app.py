@@ -1,59 +1,83 @@
-from flask import Flask, request, jsonify
+from fastapi import FastAPI
+from enum import Enum
 
-from entities.course import Course
-from entities.student import Student
+fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
 
-app = Flask(__name__)
+class ModelName(str, Enum): 
+    alexnet="alexnet"
+    resnet="resnet"
+    lenet="lenet"
 
-TEXTO_GLOBAL = ""
-COURSE_GLOBAL=None
-STUDENT_GLOBAL=None
+app=FastAPI()
 
-@app.route('/get-texto', methods=['GET'])
-def holamundo():
-    global TEXTO_GLOBAL 
-    return jsonify({"texto": TEXTO_GLOBAL}), 200
+@app.get("/")
+async def root():
+    """
+    docstring
+    """
+    return {"message":"Hello"}
 
-@app.route('/post-texto',methods=['POST'])
-def method_name():
-    global TEXTO_GLOBAL
-    data = request.get_json()
-    if not data or 'texto' not in data:
-        return jsonify({"error": "Falta campo 'texto' en el JSON "}), 400
-    TEXTO_GLOBAL = data['texto']
-    return jsonify({"mensaje": "OK"}), 200
+@app.get("/iitems/{item_id}")
+async def read_iitem(item_id:int):
+    """
+    docstring
+    """
+    return {"item_id":item_id}
 
-@app.route('/get-course',methods=['GET'])
-def get_course():
-    global COURSE_GLOBAL
-    if COURSE_GLOBAL is None:
-        return jsonify({"error":"error"}),404
-    return jsonify(COURSE_GLOBAL.to_entity()),200
+@app.get("/models/{model_name}")
+async def read_model(model_name:ModelName):
+    """
+    docstring
+    """
+    result=None
 
-@app.route('/set-course',methods=['POST'])
-def set_course():
-    global COURSE_GLOBAL
-    data=request.get_json()
-    if not data or 'name' not in data:
-        return jsonify({'error': 'El campo "name" es obligatorio'}), 400
+    if model_name is ModelName.alexnet:
+        result = {
+            'model_name': model_name,
+            'message': 'Deep Learning FTW!'
+        }
+    if model_name.value == "lenet":
+        result = {
+            'model_name': model_name,
+            'message': 'LeCNN all the images'
+        }
+    else:
+        result = {
+            'model_name': model_name,
+            'message': 'Have some residuals'
+        }
     
-    if COURSE_GLOBAL is None:
-        COURSE_GLOBAL= Course(course_id=data["id"],name=data["name"],description=data["description"])
-    return jsonify(COURSE_GLOBAL.to_entity()),200
+    return result
 
-@app.route('/set-student',methods=['POST'])
-def set_student():
-    global STUDENT_GLOBAL
-    data=request.get_json()
-    if not data or 'name' not in data:
-        return jsonify({'error': 'El campo "name" es obligatorio'}), 400
+@app.get("/fakedb/items/")
+async def read_item(skip:int=0,limit:int=10):
+    return fake_items_db[skip:skip+limit]
+
+@app.get("/fakedb/items/{item_id}")
+async def read_item_one(item_id:int, q:str | None=None):
+    if q:
+        return {"item_id":item_id, "q":q}
+    return  {"item_id":item_id}
+
+@app.get("/fakedb/items/dos/{item_id}")
+async def read_item_dos(item_id:int, q:str | None=None,search_in_fake_db:bool=False):
+    result = {"id":item_id}
+    if q:
+        result.update({"q":q})
     
-    if STUDENT_GLOBAL is None:
-        STUDENT_GLOBAL=Student(id=data["id"],name=data["name"],age=21)
+    if search_in_fake_db:
+        result.update ({"search_in_db":"Buscar en BD"})
+        result.update(get_itemvalue_fake_db(item=item_id))  
+
+    return result
+
+def get_itemvalue_fake_db(item:int):
+    """
+    docstring
+    """
+    result={"Error":"Index fuera de rango"}
+
+    if 0 <= item < len(fake_items_db):
+        result={"item_name":fake_items_db[item]}
     
-    return jsonify(STUDENT_GLOBAL),200
-
-
-
-if __name__ == '__main__':
-    app.run()
+    return result
