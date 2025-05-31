@@ -37,6 +37,19 @@ class TestAppEntity(unittest.TestCase):
         self.assertEqual(data['name'], 'Curso 2')
         self.assertEqual(data['description'], 'descrip')
 
-
+    def test_create_and_get_course(self):
+        """
+        docstring
+        """
+        response=self.app.post('/set-course',
+                               data=json.dumps({
+                                   'id':'2',
+                                   'name':'Curso 2',
+                                   'description':'descrip'
+                               }),
+                               content_type='application/json')
+        self.assertEqual(response.status_code,200)
+       
+    
 if __name__ == '__main__':
     unittest.main()
