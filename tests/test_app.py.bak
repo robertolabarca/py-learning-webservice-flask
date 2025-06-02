@@ -1,5 +1,6 @@
 import unittest
 import json
+from urllib import response
 from app import app
 
 class TestAppEntity(unittest.TestCase):
@@ -10,7 +11,13 @@ class TestAppEntity(unittest.TestCase):
         self.app = app.test_client()
         self.app.testing = True
 
-    
+    def test_get_root(self):
+        """
+        docstring
+        """
+        response=self.app.get("/")
+        data=json.load(response.data)
+        self.assertEqual(data['message'],"Hello")
 
     def test_get_course_empty(self):
         """
