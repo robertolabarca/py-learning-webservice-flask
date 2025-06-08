@@ -3,19 +3,19 @@ import re
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional
 
-
 class ModeloBase(BaseModel):
     """
     docstring
     """
-    fecha_creacion:datetime=Field(
+    fecha_creacion:datetime = Field(
         default_factory=datetime.now(),
         frozen=True,
-        description="Fecha de Creación Automática (solo lectura)"
+        description="Fecha de Creación Automática (solo lectura)",
         alias="_fechaCreacion",
-        examples="2023-01-01T00:00:00.000Z
-    )
+        examples="2023-01-01T00:00:00.000Z"
 
+    )
+    
     fecha_actualizacion: Optional[datetime] = Field(
         default=None,
         frozen=True,
@@ -43,7 +43,7 @@ class Persona(ModeloBase):
     id:int
     nombre:str
     apellidos:str
-    ci: str = Field(..., min_length=11, max_length=11, example="90010112345")
+    ci: str = Field(..., min_length=11, max_length=11, example='90010112345')
     edad:int=0  # valor debe ser solo lectura 
     email: EmailStr = Field(..., example="usuario@example.com")
     activo:bool=True
