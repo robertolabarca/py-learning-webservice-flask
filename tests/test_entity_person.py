@@ -53,6 +53,8 @@ class TestPersonEntity(unittest.TestCase):
         self.assertEqual(self.persona_valida.ci,persona_tmp.ci)
         self.assertEqual(self.persona_valida.email,persona_tmp.email)
         self.assertEqual(self.persona_valida.activo,persona_tmp.activo)
+        self.assertEqual(self.persona_valida.edad,persona_tmp.edad)
+        
 
     def test_ci_invalido_longitud_forma1(self):
         """
@@ -85,9 +87,33 @@ class TestPersonEntity(unittest.TestCase):
         """
         persona_tmp = copy.deepcopy(self.persona_valida)
         fecha_actualizacion_inicial = persona_tmp.fecha_actualizacion
-        persona_tmp.ci = "11234567890"
+        persona_tmp.ci = "11111111111"
         self.assertNotEqual(persona_tmp.fecha_actualizacion,fecha_actualizacion_inicial)
         self.assertEqual(persona_tmp.fecha_creacion,fecha_actualizacion_inicial)
+
+    def test_persona_edad_invalida_por_ci(self):        
+        """Test que verifica que CI vacío lanza ValidationError al calcular edad"""
+        with self.assertRaises(ValidationError):
+            # Crear nueva persona con CI inválido desde el principio
+            persona_invalida = Persona(
+                id=1,
+                nombre="test",
+                apellidos="test",
+                ci="",  # CI vacío
+                email="test@example.com"
+            )
+            # Acceder a la edad forzará la validación
+            _ = persona_invalida.edad
+            
+    def test_persona_edad_valida(self):
+        """
+        docstring
+        """
+        persona_tmp = copy.deepcopy(self.persona_valida)
+        persona_tmp.ci = "70010101227"
+        self.assertGreaterEqual(persona_tmp.edad,55)
+
+    
 
     def test_save_to_json_default_filename(self):
         """Test de guardado con nombre de archivo automático"""
