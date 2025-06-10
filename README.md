@@ -16,7 +16,7 @@ Para **FastAPI** se esta siguiente https://fastapi.tiangolo.com/es/tutorial/
 
 2. Ejecutar
 
-`` python3 app.py ``
+`` fastapi dev app.py ``
 
 
 
