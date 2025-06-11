@@ -1,0 +1,33 @@
+Antecedentes: Estoy asimilando python y tengo experiencia en c#
+
+Contexto: Una institución educativa necesita un sistema para gestionar la matriculación de estudiantes en cursos. El sistema debe:
+
+Gestionar personas (estudiantes) con:
+
+Nombre, apellidos, sexo (M/F/O) y número de pasaporte (único)
+Administrar cursos con:
+
+Nombre y descripción
+Registrar matrículas que relacionen:
+
+Una persona con un curso
+Requisitos técnicos:
+
+Integridad de datos: Todas las operaciones deben ser atómicas (si falla un paso, no se guardan cambios intermedios)
+Auditoría: Todos los registros deben llevar:
+Fecha/hora de creación
+Fecha/hora de última modificación
+Mantenibilidad: Evitar duplicación de código en campos comunes
+Flexibilidad: La implementación debe permitir:
+Cambios futuros en el almacenamiento (de memoria a base de datos)
+Fácil adición de nuevas funcionalidades
+Solución propuesta (con patrones de diseño):
+
+Patrón Unit of Work: Para gestionar transacciones y operaciones atómicas
+Patrón Repository: Para abstraer el acceso a datos
+Modelo Base: Para campos comunes y auditoría automática
+
+Solución propuesta (desarrollo y presentacion):
+Pydantic: para la creacion de clases
+FastApi: para el desarrollo de webservices
+unittest: creacion de casos de prueba
